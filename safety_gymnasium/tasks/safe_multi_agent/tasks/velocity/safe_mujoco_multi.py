@@ -89,6 +89,8 @@ class SafeMAEnv:
         """Step the environment."""
         observations, rewards, terminations, truncations, info = self.env.step(action)
         info_single = info[self.env.possible_agents[0]]
+        if "final_info" in info_single:
+            info_single = info_single["final_info"]
         velocity = np.sqrt(info_single['x_velocity'] ** 2 + info_single.get('y_velocity', 0) ** 2)
         if self.agent == 'Swimmer':
             velocity = info_single['x_velocity']

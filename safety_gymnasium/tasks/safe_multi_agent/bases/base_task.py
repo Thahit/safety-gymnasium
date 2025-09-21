@@ -244,7 +244,7 @@ class BaseTask(Underlying):  # pylint: disable=too-many-instance-attributes,too-
     def build_observation_space(self) -> gymnasium.spaces.Dict:
         """Construct observation space.  Happens only once during __init__ in Builder."""
         obs_space_dict = OrderedDict()  # See self.obs()
-
+        self.observe_vision = True
         sensor_dict = self.agent.build_sensor_observation_space()
         agent0_sensor_dict = {}
         agent1_sensor_dict = {}

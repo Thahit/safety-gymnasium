@@ -44,7 +44,14 @@ class SafeAutoResetWrapper(AutoResetWrapper):
             env (gym.Env): The environment to apply the wrapper
         """  # pylint: disable=line-too-long
         obs, reward, cost, terminated, truncated, info = self.env.step(action)
-        if terminated or truncated:
+        # error
+        
+        def is_done(terminated, truncated):
+            if isinstance(terminated, dict) and isinstance(truncated, dict):
+                return all(terminated.get(k, False) or truncated.get(k, False) for k in terminated)
+            else:
+                return terminated or truncated
+        if is_done(terminated, truncated):
             new_obs, new_info = self.env.reset()
             assert (
                 'final_observation' not in new_info
